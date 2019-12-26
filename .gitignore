@@ -2,3 +2,4 @@ env/
 MANIFEST
 dist/
 .mypy_cache/
+*.egg-info/
