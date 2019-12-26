@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import argparse
+import datetime
 import sys
 import time
-import datetime
 from typing import List, Optional
-
 
 ARG_PARSER = argparse.ArgumentParser()
 
@@ -97,7 +96,7 @@ def write_replace_current_line(text) -> None:
 def sleep_til_date(target_date: datetime.datetime) -> None:
     current_date = datetime.datetime.now()
     wait_seconds = (target_date - current_date).total_seconds()
-    print(f"Gonna wait for {int(wait_seconds)} seconds (til {target_date.strftime('%H:%M:%S')})")
+    print(f"Gonna wait for {round(wait_seconds)} seconds (til {target_date.strftime('%H:%M:%S')})")
     if ARGS.countdown:
         prev_time = time.time()
         while current_date < target_date:
