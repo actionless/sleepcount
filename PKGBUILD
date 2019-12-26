@@ -37,5 +37,5 @@ package() {
 	/usr/bin/python3 setup.py install --prefix=/usr --root="$pkgdir/" --optimize=1
 	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 	#install -Dm644 sleepcount.1 "$pkgdir/usr/share/man/man1/sleepcount.1"
-	#cp -r ./packaging/* "${pkgdir}"
+	cp -r ./packaging/* "${pkgdir}"
 }
