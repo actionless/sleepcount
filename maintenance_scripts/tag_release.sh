@@ -67,7 +67,9 @@ if [[ -n "${aur_dev_repo_dir:-}" ]] ; then
 	echo "**    Updating AUR dev PKGBUILD...   **"
 	echo "***************************************"
 	echo
-	./maintenance_scripts/changelog.sh > "${aur_dev_repo_dir}"/CHANGELOG
+	if [[ -f ./maintenance_scripts/changelog.sh ]] ; then
+		./maintenance_scripts/changelog.sh > "${aur_dev_repo_dir}"/CHANGELOG
+	fi
 	cp PKGBUILD "${aur_dev_repo_dir}"/PKGBUILD
 	# shellcheck disable=SC2164
 	cd "${aur_dev_repo_dir}"
@@ -80,7 +82,10 @@ if [[ -n "${aur_dev_repo_dir:-}" ]] ; then
 	read -r answer
 	echo
 	if [[ "${answer}" = "y" ]] ; then
-		git add PKGBUILD .SRCINFO CHANGELOG
+		git add PKGBUILD .SRCINFO
+		if [[ -f CHANGELOG ]] ; then
+			git add CHANGELOG
+		fi
 		git commit -m "update to ${new_version}"
 		git push origin HEAD
 	fi
@@ -95,7 +100,9 @@ if [[ -n "${aur_repo_dir:-}" ]] ; then
 	echo "*******************************************"
 	echo
 	cd "${src_repo_dir}"
-	./maintenance_scripts/changelog.sh > "${aur_repo_dir}"/CHANGELOG
+	if [[ -f ./maintenance_scripts/changelog.sh ]] ; then
+		./maintenance_scripts/changelog.sh > "${aur_repo_dir}"/CHANGELOG
+	fi
 	sed \
 		-e 's|pkgname=sleepcount-git|pkgname=sleepcount|' \
 		-e 's|"$pkgname::git+https://github.com/actionless/sleepcount.git#branch=master"|"$pkgname-$pkgver.tar.gz"::https://github.com/actionless/sleepcount/archive/"$pkgver".tar.gz|' \
@@ -116,7 +123,10 @@ if [[ -n "${aur_repo_dir:-}" ]] ; then
 	read -r answer
 	echo
 	if [[ "${answer}" = "y" ]] ; then
-		git add PKGBUILD .SRCINFO CHANGELOG
+		git add PKGBUILD .SRCINFO
+		if [[ -f CHANGELOG ]] ; then
+			git add CHANGELOG
+		fi
 		git commit -m "update to ${new_version}"
 		git push origin HEAD
 	fi
