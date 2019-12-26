@@ -13,7 +13,8 @@ def parse_args():
     ARG_PARSER.add_argument("time", nargs='*', help=(
         "time either could be defined as:\n"
         "1) integer number of seconds or  may be 's' for seconds (the default), "
-        "'m' for minutes, 'h' for hours or 'd' for days;"
+        "'m' for minutes, 'h' for hours or 'd' for days;\n"
+        "2) target time, '%%H:%%M' or '%%H:%%M:%%S'."
     ))
     ARG_PARSER.add_argument("-c", "--countdown", action='store_true', help=(
         "show interactive countdown"
