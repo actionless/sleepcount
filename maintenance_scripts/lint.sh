@@ -14,7 +14,7 @@ python -m mypy "$target"
 
 	#./maintenance_scripts/vulture_whitelist.py \
 echo Vulture:
-exec vulture "$target" \
+vulture "$target" \
 	--min-confidence=1 \
 	--sort-by-size
 
