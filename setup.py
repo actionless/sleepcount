@@ -15,7 +15,7 @@ with codecs.open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='sleepcount',  # Required
-    version='0.1.1',  # Required
+    version='0.1.2',  # Required
     description=(
         'just as a simple `sleep` CLI util '
         'but with countdown option and HH:MM:SS target time'
