@@ -103,7 +103,7 @@ def sleep_til_date(target_date: datetime.datetime) -> None:
     else:
         prev_time = time.time()
         while current_date < target_date:
-            seconds_left = int((target_date - current_date).total_seconds())
+            seconds_left = round((target_date - current_date).total_seconds())
             write_replace_current_line(datetime.timedelta(seconds=seconds_left))
             time.sleep(1 - (time.time() - prev_time))
             prev_time = time.time()
