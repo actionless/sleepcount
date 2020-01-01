@@ -5,6 +5,7 @@ import sys
 import time
 from typing import List, Optional
 
+
 ARG_PARSER = argparse.ArgumentParser()
 
 
@@ -97,7 +98,9 @@ def sleep_til_date(target_date: datetime.datetime) -> None:
     current_date = datetime.datetime.now()
     wait_seconds = (target_date - current_date).total_seconds()
     print(f"Gonna wait for {round(wait_seconds)} seconds (til {target_date.strftime('%H:%M:%S')})")
-    if ARGS.countdown:
+    if not ARGS.countdown:
+        time.sleep(wait_seconds)
+    else:
         prev_time = time.time()
         while current_date < target_date:
             seconds_left = int((target_date - current_date).total_seconds())
@@ -107,8 +110,6 @@ def sleep_til_date(target_date: datetime.datetime) -> None:
             current_date = datetime.datetime.now()
         write_replace_current_line('0:00:00')
         print()
-    else:
-        time.sleep(wait_seconds)
 
 
 def main() -> None:
