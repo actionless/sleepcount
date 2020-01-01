@@ -4,7 +4,7 @@
 pkgname=sleepcount-git
 pkgver=0.1.2
 pkgrel=1
-pkgdesc="just as a simple 'sleep' CLI util but with countdown option and HH:MM:SS target time"
+pkgdesc="just as a simple 'sleep' CLI util but with options for countdown and HH:MM:SS target time"
 arch=('any')
 url="https://github.com/actionless/sleepcount"
 license=('GPL3')

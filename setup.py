@@ -17,8 +17,8 @@ setup(
     name='sleepcount',  # Required
     version='0.1.2',  # Required
     description=(
-        'just as a simple `sleep` CLI util '
-        'but with countdown option and HH:MM:SS target time'
+        "just as a simple 'sleep' CLI util "
+        "but with options for countdown and HH:MM:SS target time"
     ),  # Required
     long_description=LONG_DESCRIPTION,  # Optional
     long_description_content_type="text/markdown",
