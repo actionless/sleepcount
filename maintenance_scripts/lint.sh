@@ -22,7 +22,11 @@ echo Flake8:
 flake8 "${TARGETS[@]}"
 
 echo PyLint:
-pylint "${TARGETS[@]}" --score no
+if [[ $("$PYTHON" --version | cut -d' ' -f2 | cut -d. -f2) -gt 9 ]] ; then
+	pylint "${TARGETS[@]}" --score no
+else
+	pylint "${TARGETS[@]}" --score no --rcfile pylint_old.conf
+fi
 
 echo MyPy:
 python -m mypy "${TARGETS[@]}"
