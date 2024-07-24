@@ -30,11 +30,12 @@ pkgver() {
 
 build() {
 	cd "${srcdir}/${pkgname}" || exit 2
+	/usr/bin/python3 -m build --wheel --no-isolation
 }
 
 package() {
 	cd "${srcdir}/${pkgname}" || exit 2
-	/usr/bin/python3 setup.py install --prefix=/usr --root="$pkgdir/" --optimize=1
+	/usr/bin/python3 -m installer --destdir="$pkgdir" dist/*.whl
 	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 	#install -Dm644 sleepcount.1 "$pkgdir/usr/share/man/man1/sleepcount.1"
 	cp -r ./packaging/* "${pkgdir}"
