@@ -3,13 +3,13 @@ import argparse
 import datetime
 import sys
 import time
-from typing import List, Optional
+from typing import Any, List, Optional
 
 
 ARG_PARSER = argparse.ArgumentParser()
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     ARG_PARSER.add_argument("time", nargs='*', help=(
         "time either could be defined as:\n"
         "1) integer number of seconds or  may be 's' for seconds (the default), "
@@ -86,7 +86,7 @@ def parse_time_delta(time_parts: List[str]) -> Optional[datetime.datetime]:
     return result
 
 
-def write_replace_current_line(text) -> None:
+def write_replace_current_line(text: Any) -> None:
     esc = chr(27)
     sys.stdout.write(
         f'{esc}[2K{esc}[\rb{text} '
