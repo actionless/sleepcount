@@ -26,25 +26,27 @@ def parse_args() -> argparse.Namespace:
 
 
 ARGS = parse_args()
-CURRENT_DATE = datetime.datetime.now()
 
 
 class TimeParsingError(Exception):
     pass
 
 
-def parse_exact_time(time_string: str) -> Optional[datetime.datetime]:
+def parse_exact_time(
+        time_string: str,
+        current_date: datetime.datetime,
+) -> Optional[datetime.datetime]:
     result = None
     for format_string in ('%H:%M', '%H:%M:%S'):
         try:
             result = datetime.datetime.strptime(time_string, format_string)
             result = result.replace(
-                year=CURRENT_DATE.year,
-                month=CURRENT_DATE.month,
-                day=CURRENT_DATE.day,
-                tzinfo=CURRENT_DATE.tzinfo
+                year=current_date.year,
+                month=current_date.month,
+                day=current_date.day,
+                tzinfo=current_date.tzinfo
             )
-            if result < CURRENT_DATE:
+            if result < current_date:
                 result = result.replace(day=result.day + 1)
             break
         except ValueError:
@@ -52,8 +54,11 @@ def parse_exact_time(time_string: str) -> Optional[datetime.datetime]:
     return result
 
 
-def parse_time_delta(time_parts: List[str]) -> Optional[datetime.datetime]:
-    result = CURRENT_DATE
+def parse_time_delta(
+        time_parts: List[str],
+        current_date: datetime.datetime,
+) -> Optional[datetime.datetime]:
+    result = current_date
 
     def add_time_part(prop: str, delta: int) -> datetime.datetime:
         if prop in found_properties:
@@ -114,14 +119,15 @@ def sleep_til_date(target_date: datetime.datetime) -> None:
 
 
 def main() -> None:
+    current_date = datetime.datetime.now()
     target_date_parts = ARGS.time
     if not target_date_parts:
         raise TimeParsingError("No time provided")
     target_date = None
     if len(target_date_parts) == 1 and ':' in target_date_parts[0]:
-        target_date = parse_exact_time(target_date_parts[0])
+        target_date = parse_exact_time(target_date_parts[0], current_date=current_date)
     else:
-        target_date = parse_time_delta(target_date_parts)
+        target_date = parse_time_delta(target_date_parts, current_date=current_date)
     if not target_date:
         raise TimeParsingError(f"Can't parse the date/time: \"{' '.join(target_date_parts)}\'")
     sleep_til_date(target_date)
