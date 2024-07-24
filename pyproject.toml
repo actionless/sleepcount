@@ -5,7 +5,7 @@ description = "just as a simple 'sleep' CLI util but with options for countdown 
 authors = [
   {name = 'Yauheni Kirylau', email = 'actionless.loveless@gmail.com'},
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 classifiers = [
   'Development Status :: 5 - Production/Stable',
 
