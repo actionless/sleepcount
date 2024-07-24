@@ -87,7 +87,7 @@ if [[ -n "${aur_dev_repo_dir:-}" ]] ; then
 			git add CHANGELOG
 		fi
 		git commit -m "update to ${new_version}"
-		git push origin HEAD
+		GIT_SSH_COMMAND="ssh -i ~/.ssh/aur" git push origin HEAD
 	fi
 	answer=
 fi
@@ -128,7 +128,7 @@ if [[ -n "${aur_repo_dir:-}" ]] ; then
 			git add CHANGELOG
 		fi
 		git commit -m "update to ${new_version}"
-		git push origin HEAD
+		GIT_SSH_COMMAND="ssh -i ~/.ssh/aur" git push origin HEAD
 	fi
 	answer=
 fi
