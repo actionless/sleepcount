@@ -39,7 +39,7 @@ readme = "README.md"
 repository = 'https://github.com/actionless/sleepcount'
 
 [project.scripts]
-pikaur = "sleepcount:cli"
+sleepcount = "sleepcount:cli"
 
 [tool.setuptools.packages.find]
 include = ["sleepcount"]
@@ -221,7 +221,7 @@ ignore = [
   "B018",
   "SLF001",
 ]
-"packaging/usr/bin/pikaur" = [
+"packaging/usr/bin/sleepcount" = [
   "T201",
 ]
 
