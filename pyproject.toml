@@ -1,6 +1,6 @@
 [project]
 name = "sleepcount"
-version = '0.1.3'
+version = '0.1.4'
 description = "just as a simple 'sleep' CLI util but with options for countdown and HH:MM:SS target time"
 authors = [
   {name = 'Yauheni Kirylau', email = 'actionless.loveless@gmail.com'},

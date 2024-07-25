@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034,SC2154
 
 pkgname=sleepcount-git
-pkgver=0.1.3
+pkgver=0.1.4
 pkgrel=1
 pkgdesc="just as a simple 'sleep' CLI util but with options for countdown and HH:MM:SS target time"
 arch=('any')
