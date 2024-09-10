@@ -1,4 +1,4 @@
-# Maintainer: Yauheni Kirylau <actionless dot loveless AT gmail.com>
+# Maintainer: Yauhen Kirylau <actionless DOT loveless PLUS aur AT gmail MF com>
 # shellcheck disable=SC2034,SC2154
 
 pkgname=sleepcount-git
@@ -38,6 +38,9 @@ pkgver() {
 
 build() {
 	cd "${srcdir}/${pkgname}" || exit 2
+	if test -d ./dist ; then
+		rm -r ./dist
+	fi
 	/usr/bin/python3 -m build --wheel --no-isolation
 }
 
