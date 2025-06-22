@@ -32,7 +32,7 @@ if [[ $(git status --porcelain 2>/dev/null| grep -c "^ [MD]" || true) -gt 0 ]] ;
 	answer=
 fi
 
-./maintenance_scripts/show_recent_history.sh -c || true
+git_show_recent_history -c || true
 
 echo
 echo "*******************************"
