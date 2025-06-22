@@ -111,7 +111,9 @@ def sleep_til_date(target_date: datetime.datetime) -> None:
         while current_date < target_date:
             seconds_left = round((target_date - current_date).total_seconds())
             write_replace_current_line(datetime.timedelta(seconds=seconds_left))
-            time.sleep(1 - (time.time() - prev_time))
+            to_sleep = 1 - (time.time() - prev_time)
+            if to_sleep > 0:
+                time.sleep(to_sleep)
             prev_time = time.time()
             current_date = datetime.datetime.now()
         write_replace_current_line('0:00:00')
