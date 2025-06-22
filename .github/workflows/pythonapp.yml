@@ -24,7 +24,3 @@ jobs:
     - name: Lint
       run: |
         ./maintenance_scripts/lint.sh
-#    - name: Test with pytest
-#      run: |
-#        pip install pytest
-#        pytest
