@@ -128,7 +128,8 @@ def sleep_til_date(
     wait_seconds = (target_date - current_date).total_seconds()
     print(f"Gonna wait for {round(wait_seconds)} seconds (til {target_date.strftime('%H:%M:%S')})")
     if not countdown:
-        time.sleep(wait_seconds)
+        if wait_seconds > 0:
+            time.sleep(wait_seconds)
     else:
         prev_time = time.time()
         while current_date < target_date:
