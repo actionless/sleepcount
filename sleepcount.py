@@ -6,26 +6,35 @@ import time
 from typing import Any, List, Optional
 
 
-ARG_PARSER = argparse.ArgumentParser()
-
-
-def parse_args() -> argparse.Namespace:
-    ARG_PARSER.add_argument("time", nargs='*', help=(
+def parse_args() -> tuple[argparse.Namespace, argparse.ArgumentParser]:
+    arg_parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    arg_parser.add_argument("time", nargs='*', help=(
         "time either could be defined as:\n"
         "1) integer number of seconds;\n"
         "2) integer with 's' for seconds, 'm' for minutes,"
         " 'h' for hours or 'd' for days (like '3s', '2m' and/or '1h');\n"
         "3) target time, '%%H:%%M' or '%%H:%%M:%%S'."
     ))
-    ARG_PARSER.add_argument("-c", "--countdown", action='store_true', help=(
+    arg_parser.add_argument("-c", "--countdown", action='store_true', help=(
         "show interactive countdown"
     ))
-    ARG_PARSER.set_defaults(countdown=False)
-    args = ARG_PARSER.parse_args()
-    return args
-
-
-ARGS = parse_args()
+    arg_parser.add_argument("-t", "--update-title", type=int, default=1, help=(
+        "update terminal title (default=1)"
+    ))
+    arg_parser.add_argument("-tp", "--title-prefix", default="", help=(
+        "terminal title cuontdown prefix (default empty)"
+    ))
+    arg_parser.add_argument("-ts", "--title-postfix", default="", help=(
+        "terminal title cuontdown postfix (default empty)"
+    ))
+    arg_parser.add_argument("-td", "--title-done", default="👌😸", help=(
+        "terminal title when done (default=`👌😸`)"
+    ))
+    arg_parser.set_defaults(countdown=False)
+    args = arg_parser.parse_args()
+    return args, arg_parser
 
 
 class TimeParsingError(Exception):
@@ -100,29 +109,48 @@ def write_replace_current_line(text: Any) -> None:
     sys.stdout.flush()
 
 
-def sleep_til_date(target_date: datetime.datetime) -> None:
+def update_title(title: str) -> None:
+    #         # sys.stdout.write(f"\033]0;test{i}\007")
+    sys.stdout.write(f"\x1b]2;{title}\x07")
+    sys.stdout.flush()
+
+
+def sleep_til_date(
+        target_date: datetime.datetime,
+        *,
+        countdown: bool = False,
+        update_terminal_title: bool = False,
+        title_prefix: str = "",
+        title_postfix: str = "",
+        title_done: str = "👌😸",
+) -> None:
     current_date = datetime.datetime.now()
     wait_seconds = (target_date - current_date).total_seconds()
     print(f"Gonna wait for {round(wait_seconds)} seconds (til {target_date.strftime('%H:%M:%S')})")
-    if not ARGS.countdown:
+    if not countdown:
         time.sleep(wait_seconds)
     else:
         prev_time = time.time()
         while current_date < target_date:
             seconds_left = round((target_date - current_date).total_seconds())
-            write_replace_current_line(datetime.timedelta(seconds=seconds_left))
+            text_to_write = str(datetime.timedelta(seconds=seconds_left))
+            write_replace_current_line(text_to_write)
+            if update_terminal_title:
+                update_title(f"{title_prefix}{text_to_write}{title_postfix}")
             to_sleep = 1 - (time.time() - prev_time)
             if to_sleep > 0:
                 time.sleep(to_sleep)
             prev_time = time.time()
             current_date = datetime.datetime.now()
         write_replace_current_line('0:00:00')
+        if update_terminal_title:
+            update_title(title_done)
         print()
 
 
-def main() -> None:
+def main(args: argparse.Namespace) -> None:
     current_date = datetime.datetime.now()
-    target_date_parts = ARGS.time
+    target_date_parts = args.time
     if not target_date_parts:
         raise TimeParsingError("No time provided")
     target_date = None
@@ -132,16 +160,24 @@ def main() -> None:
         target_date = parse_time_delta(target_date_parts, current_date=current_date)
     if not target_date:
         raise TimeParsingError(f"Can't parse the date/time: \"{' '.join(target_date_parts)}\'")
-    sleep_til_date(target_date)
+    sleep_til_date(
+        target_date,
+        countdown=args.countdown,
+        update_terminal_title=args.update_title,
+        title_prefix=args.title_prefix,
+        title_postfix=args.title_postfix,
+        title_done=args.title_done,
+    )
 
 
 def cli() -> None:
+    args, arg_parser = parse_args()
     try:
-        main()
+        main(args)
     except TimeParsingError as exc:
         print(exc)
         print()
-        ARG_PARSER.print_help()
+        arg_parser.print_help()
         sys.exit(1)
     except KeyboardInterrupt:
         print("\nReceived SIGINT. Cancelling the timer.")
